@@ -32,28 +32,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DiceRollerApp() {
     var diceNumber by remember { mutableStateOf(1) }
-    var imageLoadingError by remember { mutableStateOf(false) }
 
     // Function to roll the dice
     fun rollDice() {
         diceNumber = Random.nextInt(1, 7) // Generate a random number between 1 and 6
-        imageLoadingError = false // Reset the error flag on each roll
-    }
-
-    // Try to load the dice image with error handling
-    val diceImage = try {
-        when (diceNumber) {
-            1 -> painterResource(id = R.drawable.dice_1)
-            2 -> painterResource(id = R.drawable.dice_2)
-            3 -> painterResource(id = R.drawable.dice_3)
-            4 -> painterResource(id = R.drawable.dice_4)
-            5 -> painterResource(id = R.drawable.dice_5)
-            6 -> painterResource(id = R.drawable.dice_6)
-            else -> painterResource(id = R.drawable.dice_1) // Fallback image if no match
-        }
-    } catch (e: Exception) {
-        imageLoadingError = true // If error occurs, set the flag
-        painterResource(id = R.drawable.dice_error) // A fallback error image
     }
 
     // Updated Layout for Dice Roller with UI improvements
@@ -71,14 +53,19 @@ fun DiceRollerApp() {
             style = TextStyle(
                 fontSize = 32.sp,
                 color = Color.Black,
-                fontFamily = MaterialTheme.typography.h6.fontFamily
+                fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
             ),
             modifier = Modifier.padding(bottom = 32.dp) // Add padding below the title
         )
 
-        // Show a placeholder or error message if the image failed to load
-        if (imageLoadingError) {
-            Text("Error loading dice image. Please try again.")
+        // Dice image display based on the roll
+        val diceImage = when (diceNumber) {
+            1 -> painterResource(id = R.drawable.dice_1)
+            2 -> painterResource(id = R.drawable.dice_2)
+            3 -> painterResource(id = R.drawable.dice_3)
+            4 -> painterResource(id = R.drawable.dice_4)
+            5 -> painterResource(id = R.drawable.dice_5)
+            else -> painterResource(id = R.drawable.dice_6)
         }
 
         // Display the dice image dynamically
